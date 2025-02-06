@@ -23,3 +23,19 @@ Redirect to the original URL based on the short URL alias, enabling seamless acc
 
 * using Redis improving the performance of the API by reducing database load.
 * Endpoints: {PORT}/api/shorten/{alias}
+
+
+# Analytics
+
+* # Get URL Analytics API
+Retrieve detailed analytics for a specific short URL, providing insights into its performance, including total clicks and unique audience interactions.
+
+* Endpoint:{PORT}/api/analytics/{alias}
+* DATA EX :{
+  "totalClicks":7,
+  "uniqueUsers":1,
+  "clicksByDate":[{"date":"2025-02-01","clicks":0},{"date":"2025-02-02","clicks":0},{"date":"2025-02-03","clicks":0},{"date":"2025-02-04","clicks":0},{"date":"2025-02-05","clicks":0},{"date":"2025-02-06","clicks":0},{"date":"2025-02-07","clicks":7}],
+  "osType":[{"osName":"Postman","uniqueClicks":6,"uniqueUsers":1},{"osName":"Windows","uniqueClicks":1,"uniqueUsers":1}],
+  "deviceType":[{"deviceName":"desktop","uniqueClicks":7,"uniqueUsers":1}]
+  }
+
