@@ -39,3 +39,14 @@ Retrieve detailed analytics for a specific short URL, providing insights into it
   "deviceType":[{"deviceName":"desktop","uniqueClicks":7,"uniqueUsers":1}]
   }
 
+# Get Topic-Based Analytics API
+Retrieve analytics for all short URLs grouped under a specific topic, allowing users to assess the performance of their links based on categories.
+
+* Endpoint:{PORT}/api/analytics/topic/{topic}
+* DATA EX :
+{"totalClicks":11,
+"uniqueUsers":1,
+"clicksByDate":[{"date":"2025-02-01","clicks":0},{"date":"2025-02-02","clicks":0},{"date":"2025-02-03","clicks":0},{"date":"2025-02-04","clicks":0},{"date":"2025-02-05","clicks":0},{"date":"2025-02-06","clicks":0},{"date":"2025-02-07","clicks":11}],
+"urls":[{"shortUrl":"HyEEuE8","totalClicks":4,"uniqueUsers":1},{"shortUrl":"X4tcFKs","totalClicks":7,"uniqueUsers":1}]}
+
+

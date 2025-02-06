@@ -26,4 +26,56 @@ export const getUrlAnalytics = async (req, res) => {
   }
 };
 
+// Get analytics for a specific topic
+export const getTopicAnalytics = async (req, res) => {
+  try {
+    const { topic } = req.params;
+    const urls = await Url.find({ topic });
+    if (!urls.length)
+      return res.status(404).json({ message: "No URLs found for this topic" });
+
+    const shortUrls = urls.map((url) => url.shortUrl);
+    const analytics = await Analytics.find({ shortUrl: { $in: shortUrls } });
+
+    res.json({
+      totalClicks: analytics.length,
+      uniqueUsers: new Set(analytics.map((a) => a.ipAddress)).size,
+      clicksByDate: calculateClicksByDate(analytics),
+      urls: shortUrls.map((shortUrl) => ({
+        shortUrl,
+        totalClicks: analytics.filter((a) => a.shortUrl === shortUrl).length,
+        uniqueUsers: new Set(
+          analytics
+            .filter((a) => a.shortUrl === shortUrl)
+            .map((a) => a.ipAddress)
+        ).size,
+      })),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get overall analytics for all URLs created by the authenticated user
+export const getOverallAnalytics = async (req, res) => {
+  try {
+    const userId = new ObjectId(req.user.id);
+    const urls = await Url.find({ createdBy: userId });
+    if (!urls.length)
+      return res.status(404).json({ message: "No URLs found for this user" });
+
+    const shortUrls = urls.map((url) => url.shortUrl);
+    const analytics = await Analytics.find({ shortUrl: { $in: shortUrls } });
+
+    res.json({
+      totalUrls: urls.length,
+      totalClicks: analytics.length,
+      uniqueUsers: new Set(analytics.map((a) => a.ipAddress)).size,
+      clicksByDate: calculateClicksByDate(analytics),
+      ...calculateOsAndDeviceAnalytics(analytics),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
