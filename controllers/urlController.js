@@ -37,3 +37,55 @@ export const createShortUrl = async (req, res) => {
   }
 };
 
+// Redirect Short URL API
+export const redirectShortUrl = async (req, res) => {
+  try {
+    const { alias } = req.params;
+    // Check Redis Cache for Long URL
+    const cachedUrl = await redisClient.get(`shortUrl:${alias}`);
+    if (cachedUrl) {
+      await trackAnalytics(alias, req);
+      return res.redirect(cachedUrl);
+    }
+
+    // If not cached, fetch from database
+    const urlEntry = await Url.findOne({ shortUrl: alias });
+
+    if (!urlEntry) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Short URL not found" });
+    }
+
+    await trackAnalytics(alias, req);
+
+    // Cache result for faster future access
+    await redisClient.setEx(`shortUrl:${alias}`, 3600, urlEntry.longUrl); // Cache for 1 hour
+
+    res.redirect(urlEntry.longUrl);
+  } catch (error) {
+    console.error("Error redirecting short URL:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Helper Function: Track Analytics
+const trackAnalytics = async (shortUrl, req) => {
+  try {
+    const ipAddress =
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    const userAgent = req.headers["user-agent"];
+    const locationData = await getGeoLocation(ipAddress);
+
+    const analyticsEntry = new Analytics({
+      shortUrl,
+      userAgent,
+      ipAddress,
+      location: locationData,
+    });
+
+    await analyticsEntry.save();
+  } catch (error) {
+    console.error("Error saving analytics:", error);
+  }
+};
