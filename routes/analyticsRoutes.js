@@ -9,7 +9,7 @@ import { authenticateUser } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.get("/analytics/overall/",authenticateUser, getOverallAnalytics); // Overall analytics
-router.get("/analytics/:alias", getUrlAnalytics);
-router.get("/analytics/topic/:topic", getTopicAnalytics); // Topic-based analytics
+router.get("/analytics/:alias",authenticateUser, getUrlAnalytics);
+router.get("/analytics/topic/:topic", authenticateUser,getTopicAnalytics); // Topic-based analytics
 
 export default router;

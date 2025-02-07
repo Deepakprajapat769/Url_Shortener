@@ -1,6 +1,17 @@
 # Git Repo....
 Url-Shortener Git Repo : https://github.com/Deepakprajapat769/Url_Shortener
 
+# Postman Api URL....
+Postman Documenter : https://documenter.getpostman.com/view/28506441/2sAYX8K1gc
+
+# Docker Repo....
+
+
+# Setup
+* .env File Attech...
+* npm install
+* npm start
+
 # User Authentication
 Create accounts and authenticate themselves using Google Sign-In
 # Google Exess
@@ -49,4 +60,14 @@ Retrieve analytics for all short URLs grouped under a specific topic, allowing u
 "clicksByDate":[{"date":"2025-02-01","clicks":0},{"date":"2025-02-02","clicks":0},{"date":"2025-02-03","clicks":0},{"date":"2025-02-04","clicks":0},{"date":"2025-02-05","clicks":0},{"date":"2025-02-06","clicks":0},{"date":"2025-02-07","clicks":11}],
 "urls":[{"shortUrl":"HyEEuE8","totalClicks":4,"uniqueUsers":1},{"shortUrl":"X4tcFKs","totalClicks":7,"uniqueUsers":1}]}
 
+# Get Overall Analytics API
+Retrieve overall analytics for all short URLs created by the authenticated user, providing a comprehensive view of their link performance.
 
+* Endpoint:{PORT}/api/analytics/topic/overall
+* DATA EX :
+{"totalUrls":2,
+"totalClicks":11,
+"uniqueUsers":1,
+"clicksByDate":[{"date":"2025-02-01","clicks":0},{"date":"2025-02-02","clicks":0},{"date":"2025-02-03","clicks":0},{"date":"2025-02-04","clicks":0},{"date":"2025-02-05","clicks":0},{"date":"2025-02-06","clicks":0},{"date":"2025-02-07","clicks":11}],
+"osType":[{"osName":"Postman","uniqueClicks":9,"uniqueUsers":1},{"osName":"Windows","uniqueClicks":2,"uniqueUsers":1}],
+"deviceType":[{"deviceName":"desktop","uniqueClicks":11,"uniqueUsers":1}]}
